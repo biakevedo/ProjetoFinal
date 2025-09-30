@@ -1,7 +1,8 @@
 package br.com.senai.projetoFinal.projetoFinal.Service;
 
 import br.com.senai.projetoFinal.projetoFinal.Repository.TagRepository;
-import br.com.senai.projetoFinal.projetoFinal.model.Tag;
+import br.com.senai.projetoFinal.projetoFinal.model.TagModel;
+import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,15 +16,15 @@ public class TagService {
         this.tagRepository = tagRepository;
     }
 
-    public Tag cadastraTag(Tag tag) {
+    public TagModel cadastraTag(TagModel tag) {
         return tagRepository.save(tag);
     }
 
-    public Tag buscaTag(String tagNome) {
-       return tagRepository.findByTagNome(tagNome);
+    public TagModel buscaTag(String tagNome) {
+       return tagRepository.findByNomeContainingIgnoreCase(tagNome);
     }
 
-    public List<Tag> findByUsuarioEmail(String email){
-        return tagRepository.findByUsuarioEmail(email);
+    public List<TagModel> findByIdUsuario(Usuario usuarioId){
+        return tagRepository.findByIdUsuario(usuarioId);
     }
 }

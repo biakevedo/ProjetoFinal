@@ -1,7 +1,8 @@
 package br.com.senai.projetoFinal.projetoFinal.Controller;
 
 import br.com.senai.projetoFinal.projetoFinal.Service.TagService;
-import br.com.senai.projetoFinal.projetoFinal.model.Tag;
+import br.com.senai.projetoFinal.projetoFinal.model.TagModel;
+import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,8 +27,8 @@ public class TagController {
     @Operation(
             summary = "Cadastra uma tag"
     )
-    public ResponseEntity<Tag> criaTags(@RequestBody Tag t) {
-        Tag tag = tagService.cadastraTag(t);
+    public ResponseEntity<TagModel> criaTags(@RequestBody TagModel t) {
+        TagModel tag = tagService.cadastraTag(t);
        return ResponseEntity.ok().body(tag);
     }
 
@@ -35,8 +36,12 @@ public class TagController {
     @Operation(
             summary = "Busca uma tag pelo nome"
     )
-    public ResponseEntity<Tag> filtaTag(String nome) {
-        Tag tag = tagService.buscaTag(nome);
+    public ResponseEntity<?> filtraTag(String nome) {
+        TagModel tag = tagService.buscaTag(nome);
+
+        if (tag == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tag nao encontrada");
+        }
         return ResponseEntity.ok().body(tag);
     }
 
@@ -44,8 +49,8 @@ public class TagController {
     @Operation(
             summary = "Busca usuario por email"
     )
-    public ResponseEntity<List<Tag>> findByUsuarioEmail(String email) {
-        List tag = tagService.findByUsuarioEmail(email);
+    public ResponseEntity<List<TagModel>> findByIdUsuario(Usuario usuarioId) {
+        List tag = tagService.findByIdUsuario(usuarioId);
         return ResponseEntity.ok().body(tag);
     }
 
