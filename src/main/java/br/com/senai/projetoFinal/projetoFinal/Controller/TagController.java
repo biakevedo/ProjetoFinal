@@ -29,7 +29,7 @@ public class TagController {
     @Operation(
             summary = "Cadastra uma tag"
     )
-    public ResponseEntity<TagModel> criaTags(@RequestBody TagModel t) {
+    public ResponseEntity<TagModel> criaTags(TagModel t) {
         TagModel tag = tagService.cadastraTag(t);
        return ResponseEntity.ok().body(tag);
     }
