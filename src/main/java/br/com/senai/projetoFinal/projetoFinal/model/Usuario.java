@@ -28,4 +28,7 @@ public class Usuario {
     @Column(name = "data_alteracao", nullable = false)
     private OffsetDateTime dataAlteracao;
 
+    @Column(name = "nome_completo", length = Integer.MAX_VALUE)
+    private String nomeCompleto;
+
 }
