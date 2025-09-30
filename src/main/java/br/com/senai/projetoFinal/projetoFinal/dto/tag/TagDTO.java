@@ -4,5 +4,5 @@ public class TagDTO {
 
     String nome;
     String idTag;
-    UsuarioDTO usuario;
+//    UsuarioDTO usuario;
 }

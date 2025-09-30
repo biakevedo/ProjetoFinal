@@ -17,7 +17,8 @@ public class TagModel {
     @Column(name = "nome", nullable = false, length = Integer.MAX_VALUE)
     private String nome;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+//    TODO: Mudar para LAZY quando fizer o DTO
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario")
     private Usuario idUsuario;
 
