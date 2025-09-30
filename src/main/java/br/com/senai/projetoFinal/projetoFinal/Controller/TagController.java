@@ -4,9 +4,11 @@ import br.com.senai.projetoFinal.projetoFinal.Service.TagService;
 import br.com.senai.projetoFinal.projetoFinal.model.TagModel;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 import java.util.List;
@@ -32,7 +34,7 @@ public class TagController {
        return ResponseEntity.ok().body(tag);
     }
 
-    @GetMapping
+    @GetMapping("/filter")
     @Operation(
             summary = "Busca uma tag pelo nome"
     )
