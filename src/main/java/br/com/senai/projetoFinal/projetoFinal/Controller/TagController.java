@@ -29,8 +29,12 @@ public class TagController {
     @Operation(
             summary = "Cadastra uma tag"
     )
-    public ResponseEntity<TagModel> criaTags(TagModel t) {
+    public ResponseEntity<?> criaTags(@RequestBody TagModel t) {
         TagModel tag = tagService.cadastraTag(t);
+
+        if (tag == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao cadastrar tag");
+        }
        return ResponseEntity.ok().body(tag);
     }
 
@@ -49,10 +53,14 @@ public class TagController {
 
     @GetMapping
     @Operation(
-            summary = "Busca usuario por email"
+            summary = "Busca os usuarios dono da tag, usando usuarioId"
     )
-    public ResponseEntity<List<TagModel>> findByIdUsuario(Usuario usuarioId) {
+    public ResponseEntity<?> findByIdUsuario(Usuario usuarioId) {
         List tag = tagService.findByIdUsuario(usuarioId);
+
+        if (tag.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario nao encontrado");
+        }
         return ResponseEntity.ok().body(tag);
     }
 
