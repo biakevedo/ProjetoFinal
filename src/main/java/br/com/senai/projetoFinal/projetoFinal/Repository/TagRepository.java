@@ -12,5 +12,5 @@ import java.util.List;
 public interface TagRepository extends JpaRepository<TagModel, Integer> {
 
     List<TagModel> findByIdUsuario(Usuario usuarioId);
-    TagModel findByNomeContainingIgnoreCase(String nome);
+    List<TagModel> findByNomeContainingIgnoreCase(String nome);
 }
