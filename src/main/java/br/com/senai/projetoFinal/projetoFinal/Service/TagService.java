@@ -20,7 +20,7 @@ public class TagService {
         return tagRepository.save(tag);
     }
 
-    public TagModel buscaTag(String tagNome) {
+    public List<TagModel> buscaTag(String tagNome) {
        return tagRepository.findByNomeContainingIgnoreCase(tagNome);
     }
 

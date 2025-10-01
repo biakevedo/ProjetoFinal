@@ -43,9 +43,9 @@ public class TagController {
             summary = "Busca uma tag pelo nome"
     )
     public ResponseEntity<?> filtraTag(String nome) {
-        TagModel tag = tagService.buscaTag(nome);
+        List<TagModel> tag = tagService.buscaTag(nome);
 
-        if (tag == null) {
+        if (tag.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tag nao encontrada");
         }
         return ResponseEntity.ok().body(tag);
