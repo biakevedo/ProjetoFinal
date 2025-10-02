@@ -1,6 +1,7 @@
 package br.com.senai.projetoFinal.projetoFinal.Controller;
 
 import br.com.senai.projetoFinal.projetoFinal.Service.TagService;
+import br.com.senai.projetoFinal.projetoFinal.dto.tag.RetornoTagDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.TagModel;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +31,7 @@ public class TagController {
             summary = "Cadastra uma tag"
     )
     public ResponseEntity<?> criaTags(@RequestBody TagModel t) {
-        TagModel tag = tagService.cadastraTag(t);
+        RetornoTagDTO tag = tagService.cadastraTag(t);
 
         if (tag == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao cadastrar tag");
@@ -43,7 +44,7 @@ public class TagController {
             summary = "Busca uma tag pelo nome"
     )
     public ResponseEntity<?> filtraTag(String nome) {
-        List<TagModel> tag = tagService.buscaTag(nome);
+        List<RetornoTagDTO> tag = tagService.buscaTag(nome);
 
         if (tag.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tag nao encontrada");
@@ -55,8 +56,8 @@ public class TagController {
     @Operation(
             summary = "Busca os usuarios dono da tag, usando usuarioId"
     )
-    public ResponseEntity<?> findByIdUsuario(Usuario usuarioId) {
-        List tag = tagService.findByIdUsuario(usuarioId);
+    public ResponseEntity<?> findByUsuarioId(Integer usuarioId) {
+        List tag = tagService.findByUsuarioId(usuarioId);
 
         if (tag.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario nao encontrado");

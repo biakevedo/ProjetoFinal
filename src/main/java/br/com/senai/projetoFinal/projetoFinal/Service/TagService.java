@@ -1,6 +1,7 @@
 package br.com.senai.projetoFinal.projetoFinal.Service;
 
 import br.com.senai.projetoFinal.projetoFinal.Repository.TagRepository;
+import br.com.senai.projetoFinal.projetoFinal.dto.tag.RetornoTagDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.TagModel;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import org.springframework.stereotype.Service;
@@ -16,15 +17,15 @@ public class TagService {
         this.tagRepository = tagRepository;
     }
 
-    public TagModel cadastraTag(TagModel tag) {
+    public RetornoTagDTO cadastraTag(TagModel tag) {
         return tagRepository.save(tag);
     }
 
-    public List<TagModel> buscaTag(String tagNome) {
+    public List<RetornoTagDTO> buscaTag(String tagNome) {
        return tagRepository.findByNomeContainingIgnoreCase(tagNome);
     }
 
-    public List<TagModel> findByIdUsuario(Usuario usuarioId){
-        return tagRepository.findByIdUsuario(usuarioId);
+    public List<TagModel> findByUsuarioId(Integer usuarioId){
+        return tagRepository.findByUsuarioId(usuarioId);
     }
 }
