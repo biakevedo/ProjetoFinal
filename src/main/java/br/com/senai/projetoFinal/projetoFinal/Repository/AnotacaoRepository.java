@@ -1,10 +1,9 @@
 package br.com.senai.projetoFinal.projetoFinal.Repository;
 
-
-import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
+import br.com.senai.projetoFinal.projetoFinal.model.Anotacao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+public interface AnotacaoRepository extends JpaRepository<Anotacao, Integer> {
 }

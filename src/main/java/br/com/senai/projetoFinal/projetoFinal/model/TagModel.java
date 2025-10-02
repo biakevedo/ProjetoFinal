@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "tag", schema = "projeto_final")
-public class Tag {
+public class TagModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tag", nullable = false)
@@ -16,5 +16,10 @@ public class Tag {
 
     @Column(name = "nome", nullable = false, length = Integer.MAX_VALUE)
     private String nome;
+
+//    TODO: Mudar para LAZY quando fizer o DTO
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_usuario")
+    private Usuario idUsuario;
 
 }
