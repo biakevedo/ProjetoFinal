@@ -1,6 +1,7 @@
 package br.com.senai.projetoFinal.projetoFinal.Controller;
 
 import br.com.senai.projetoFinal.projetoFinal.Service.UsuarioService;
+import br.com.senai.projetoFinal.projetoFinal.dto.usuario.CadastrarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,8 +13,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuario")
-@Tag(name = "Controller de CLiente", description = "Metodos de Usuarios")
+@Tag(name = "Controller de Usuario", description = "Metodos de Usuarios")
 public class UsuarioController {
+
     private final UsuarioService usuarioService;
 
     public UsuarioController(UsuarioService usuarioService) {
@@ -33,8 +35,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> cadastrarCliente (
-            @RequestBody Usuario cliente
+    public ResponseEntity<CadastrarUsuarioDTO> cadastrarUsuario (@RequestBody CadastrarUsuarioDTO cliente
     )
 
     {
