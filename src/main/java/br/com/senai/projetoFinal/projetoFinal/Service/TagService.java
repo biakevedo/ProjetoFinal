@@ -2,6 +2,7 @@ package br.com.senai.projetoFinal.projetoFinal.Service;
 
 import br.com.senai.projetoFinal.projetoFinal.Repository.TagRepository;
 import br.com.senai.projetoFinal.projetoFinal.Repository.UsuarioRepository;
+import br.com.senai.projetoFinal.projetoFinal.dto.tag.RetornoGetAllTagDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.tag.RetornoTagCreateDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.TagModel;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
@@ -9,6 +10,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TagService {
@@ -22,7 +24,7 @@ public class TagService {
     }
 
     public RetornoTagCreateDTO cadastraTag(RetornoTagCreateDTO tag) {
-        Integer usuarioId = tag.getIdUsuario();
+        Integer usuarioId = tag.getIdUsuario().getId();
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com o ID: " + usuarioId));
 
@@ -31,16 +33,27 @@ public class TagService {
         novaTag.setNome(tag.getNomeTag());
         novaTag.setUsuario(usuario);
 
-        tagRepository.save(tag);
+        tagRepository.save(novaTag);
 
         return tag;
     }
 
     public List<RetornoTagCreateDTO> buscaTag(String tagNome) {
-       return tagRepository.findByNomeContainingIgnoreCase(tagNome);
+        List<TagModel> tags = tagRepository.findByNomeContainingIgnoreCase(tagNome);
+        List<RetornoTagCreateDTO> dtos = tags.stream()
+                .map(tag -> new RetornoTagCreateDTO(tag.getNome(), tag.getUsuario()))
+                .collect(Collectors.toList());
+        return dtos;
     }
 
-    public List<TagModel> findByUsuarioId(Integer usuarioId){
-        return tagRepository.findByUsuarioId(usuarioId);
+    public List<RetornoGetAllTagDTO> findByUsuarioId(Integer usuarioId){
+        List<TagModel> usuarios = tagRepository.findByUsuarioId(usuarioId);
+
+        List<RetornoGetAllTagDTO> dtos = usuarios.stream()
+                .map(usuario -> new RetornoTagCreateDTO(usuario.getNome(), usuario.getUsuario()))
+                .collect(Collectors.toList());
+        return dtos;
     }
+
+
 }
