@@ -22,7 +22,7 @@ public class Usuario {
     @Column(name = "senha", nullable = false, length = Integer.MAX_VALUE)
     private String senha;
 
-    @Column(name = "data_cadastro", nullable = false, length = Character.MAX_VALUE)
+    @Column(name = "data_cadastro", nullable = false )
     private OffsetDateTime dataCadastro;
 
     @Column(name = "data_alteracao", nullable = true)
