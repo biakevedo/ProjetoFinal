@@ -28,7 +28,7 @@ public class Anotacao {
     @Column(name = "data_alteracao", nullable = true)
     private OffsetDateTime dataAlteracao;
 
-    @Column(name = "data_cadastro", nullable = false, length = Character.MAX_VALUE)
+    @Column(name = "data_cadastro", nullable = false)
     private OffsetDateTime dataCadastro;
 
     @Column(name = "imagem", nullable = false, length = Integer.MAX_VALUE)
