@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/usuario")
+@RequestMapping("/usuario")
 @Tag(name = "Controller de Usuario", description = "Metodos de Usuarios")
 public class UsuarioController {
 
@@ -35,20 +35,20 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<CadastrarUsuarioDTO> cadastrarUsuario (@RequestBody CadastrarUsuarioDTO cliente
+    public ResponseEntity<CadastrarUsuarioDTO> cadastrar (@RequestBody CadastrarUsuarioDTO usuario
     )
 
     {
 
         // 1. Tentar cadastrar o cliente
-        usuarioService.cadastrarUsuario(cliente);
+        usuarioService.cadastrarUsuario(usuario);
 
 
         // Codigo 200 - OK
-        //return ResponseEntity.ok(cliente);
+        //return ResponseEntity.ok(usuario);
 
         // Codigo 201 - CREATED
-        return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
 
 
     }
