@@ -1,6 +1,7 @@
 package br.com.senai.projetoFinal.projetoFinal.Service;
 
 import br.com.senai.projetoFinal.projetoFinal.Repository.UsuarioRepository;
+import br.com.senai.projetoFinal.projetoFinal.dto.usuario.CadastrarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,20 @@ public class UsuarioService {
 
     }
 
-    public Usuario cadastrarUsuario(Usuario cl) {
-        return usuarioRepository.save(cl);
+    public CadastrarUsuarioDTO cadastrarUsuario(CadastrarUsuarioDTO cl) {
+        // 2. Cria uma nova instância da ENTIDADE 'Tag', que será salva.
+        Usuario novoUsuario = new  Usuario();
+
+        // 3. Mapeia os dados da DTO e da entidade buscada para a nova entidade.
+        novoUsuario.setNomeCompleto(cl.getNomeCompleto());
+        novoUsuario.setSenha(cl.getSenha());
+        novoUsuario.setDataCadastro(cl.getDataCadastro);// Associa o usuário completo que buscamos
+
+        // 4. Salva a entidade preenchida no banco.
+        usuarioRepository.save(novoUsuario);
+
+        // 5. Retorna a DTO original para confirmar os dados que foram enviados.
+        return cl;
 
     }
 
@@ -59,6 +72,8 @@ public class UsuarioService {
         usuarioAntigo.setDataCadastro(usuarioNovo.getDataCadastro());
         usuarioAntigo.setDataAlteracao(usuarioNovo.getDataAlteracao());
         return usuarioRepository.save(usuarioAntigo);
+
+
 
     }
 }

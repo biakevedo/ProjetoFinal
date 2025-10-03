@@ -1,9 +1,9 @@
 package br.com.senai.projetoFinal.projetoFinal.Controller;
 
 import br.com.senai.projetoFinal.projetoFinal.Service.TagService;
-import br.com.senai.projetoFinal.projetoFinal.model.TagModel;
-import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
+import br.com.senai.projetoFinal.projetoFinal.dto.tag.RetornoTagCreateDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,19 +29,23 @@ public class TagController {
     @Operation(
             summary = "Cadastra uma tag"
     )
-    public ResponseEntity<TagModel> criaTags(@RequestBody TagModel t) {
-        TagModel tag = tagService.cadastraTag(t);
-       return ResponseEntity.ok().body(tag);
+    public ResponseEntity<?> criaTags(@RequestBody RetornoTagCreateDTO t) {
+        RetornoTagCreateDTO tag = tagService.cadastraTag(t);
+
+        if (tag == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao cadastrar tag");
+        }
+       return ResponseEntity.status(HttpStatus.CREATED).body(tag);
     }
 
     @GetMapping("/filter")
     @Operation(
             summary = "Busca uma tag pelo nome"
     )
-    public ResponseEntity<?> filtraTag(String nome) {
-        TagModel tag = tagService.buscaTag(nome);
+    public ResponseEntity<?> filtraTag(@Parameter String nome) {
+        List<RetornoTagCreateDTO> tag = tagService.buscaTag(nome);
 
-        if (tag == null) {
+        if (tag.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tag nao encontrada");
         }
         return ResponseEntity.ok().body(tag);
@@ -49,10 +53,14 @@ public class TagController {
 
     @GetMapping
     @Operation(
-            summary = "Busca usuario por email"
+            summary = "Busca os usuarios dono da tag, usando usuarioId"
     )
-    public ResponseEntity<List<TagModel>> findByIdUsuario(Usuario usuarioId) {
-        List tag = tagService.findByIdUsuario(usuarioId);
+    public ResponseEntity<?> findByUsuarioId(@Parameter Integer usuarioId) {
+        List tag = tagService.findByUsuarioId(usuarioId);
+
+        if (tag.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario nao encontrado");
+        }
         return ResponseEntity.ok().body(tag);
     }
 
