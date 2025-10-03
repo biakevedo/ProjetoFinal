@@ -1,6 +1,7 @@
 package br.com.senai.projetoFinal.projetoFinal.Controller;
 
 import br.com.senai.projetoFinal.projetoFinal.Service.UsuarioService;
+import br.com.senai.projetoFinal.projetoFinal.dto.usuario.CadastrarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,9 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/usuario")
-@Tag(name = "Controller de CLiente", description = "Metodos de Usuarios")
+@RequestMapping("/usuario")
+@Tag(name = "Controller de Usuario", description = "Metodos de Usuarios")
 public class UsuarioController {
+
     private final UsuarioService usuarioService;
 
     public UsuarioController(UsuarioService usuarioService) {
@@ -33,21 +35,20 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> cadastrarCliente (
-            @RequestBody Usuario cliente
+    public ResponseEntity<CadastrarUsuarioDTO> cadastrar (@RequestBody CadastrarUsuarioDTO usuario
     )
 
     {
 
         // 1. Tentar cadastrar o cliente
-        usuarioService.cadastrarUsuario(cliente);
+        usuarioService.cadastrarUsuario(usuario);
 
 
         // Codigo 200 - OK
-        //return ResponseEntity.ok(cliente);
+        //return ResponseEntity.ok(usuario);
 
         // Codigo 201 - CREATED
-        return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
 
 
     }
