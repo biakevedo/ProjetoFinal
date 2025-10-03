@@ -7,13 +7,9 @@ import java.time.OffsetDateTime;
 @Data
 public class ListarUsuarioDTO {
 
-    private Integer id;
-
     private String email;
 
     private OffsetDateTime dataCadastro;
-
-    private OffsetDateTime dataAlteracao;
 
     private String nomeCompleto;
 

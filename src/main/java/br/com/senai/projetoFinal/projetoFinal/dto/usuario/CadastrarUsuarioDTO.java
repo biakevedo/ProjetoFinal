@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 public class CadastrarUsuarioDTO {
 
 
-    public OffsetDateTime getDataCadastro;
+
     private String email;
 
     private String senha;
