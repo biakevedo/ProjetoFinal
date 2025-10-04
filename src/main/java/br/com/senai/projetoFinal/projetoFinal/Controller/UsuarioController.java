@@ -2,6 +2,7 @@ package br.com.senai.projetoFinal.projetoFinal.Controller;
 
 import br.com.senai.projetoFinal.projetoFinal.Service.UsuarioService;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.CadastrarUsuarioDTO;
+import br.com.senai.projetoFinal.projetoFinal.dto.usuario.ListarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("api/usuario")
 @Tag(name = "Controller de Usuario", description = "Metodos de Usuarios")
 public class UsuarioController {
 
@@ -27,15 +28,19 @@ public class UsuarioController {
             summary = "Lista todos os clientes",
             description = "Lista todos os clientes sem nenhuma restricao"
     )
-    public ResponseEntity<List<Usuario>> listarUsuario(){
-        // 1. Pegar a lista de clientes
-        List<Usuario> clientes = usuarioService.listarTodos();
-        return ResponseEntity.ok(clientes);
+
+    public ResponseEntity<List<ListarUsuarioDTO>> listar() {
+        // Chama o serviço que já retorna a lista no formato correto (DTO)
+        List<ListarUsuarioDTO> usuario = usuarioService.listarTodosDTO();
+        // Retorna 200 OK com a lista no corpo da report
+        return ResponseEntity.ok(usuario);
 
     }
 
+
+
     @PostMapping
-    public ResponseEntity<CadastrarUsuarioDTO> cadastrar (@RequestBody CadastrarUsuarioDTO usuario
+    public ResponseEntity<CadastrarUsuarioDTO> cadastrar(@RequestBody CadastrarUsuarioDTO usuario
     )
 
     {

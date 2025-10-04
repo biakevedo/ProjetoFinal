@@ -22,10 +22,10 @@ public class Usuario {
     @Column(name = "senha", nullable = false, length = Integer.MAX_VALUE)
     private String senha;
 
-    @Column(name = "data_cadastro", nullable = false )
+    @Column(name = "data_cadastro", nullable = false, columnDefinition = "TIMESTAMPTZ")
     private OffsetDateTime dataCadastro;
 
-    @Column(name = "data_alteracao", nullable = true)
+    @Column(name = "data_alteracao", nullable = true, columnDefinition = "TIMESTAMPTZ")
     private OffsetDateTime dataAlteracao;
 
     @Column(name = "nome_completo", length = Integer.MAX_VALUE)

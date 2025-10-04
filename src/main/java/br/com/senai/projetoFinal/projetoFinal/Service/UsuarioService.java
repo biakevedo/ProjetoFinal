@@ -2,10 +2,13 @@ package br.com.senai.projetoFinal.projetoFinal.Service;
 
 import br.com.senai.projetoFinal.projetoFinal.Repository.UsuarioRepository;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.CadastrarUsuarioDTO;
+import br.com.senai.projetoFinal.projetoFinal.dto.usuario.ListarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -28,8 +31,9 @@ public class UsuarioService {
 
         // 3. Mapeia os dados da DTO e da entidade buscada para a nova entidade.
         novoUsuario.setNomeCompleto(cl.getNomeCompleto());
+        novoUsuario.setEmail(cl.getEmail());
         novoUsuario.setSenha(cl.getSenha());
-        novoUsuario.setDataCadastro(cl.getDataCadastro);// Associa o usuário completo que buscamos
+        novoUsuario.setDataCadastro(OffsetDateTime.now());// Associa o usuário completo que buscamos
 
         // 4. Salva a entidade preenchida no banco.
         usuarioRepository.save(novoUsuario);
@@ -42,6 +46,27 @@ public class UsuarioService {
     public Usuario buscarPorId(Integer id) {
         return usuarioRepository.findById(id).orElse(null);
 
+
+    }
+
+    public List<ListarUsuarioDTO> listarTodosDTO () {
+        // 1. Busca todas as entidades do banco
+        List<Usuario> tags = usuarioRepository.findAll();
+
+        // 2. Mapeia a lista de Entidades para uma lista de DTOs
+        return tags.stream()
+                // Usa o método auxiliar de conversão
+                .map(this::converterParaListagemDTO)
+                .collect(Collectors.toList());
+    }
+
+    private ListarUsuarioDTO converterParaListagemDTO (Usuario usuario) {
+        ListarUsuarioDTO dto = new ListarUsuarioDTO();
+
+        // Mapeamento campo a campo
+        dto.setNomeCompleto(usuario.getNomeCompleto());
+
+        return dto;
     }
 
     public Usuario deletarUsuario(Integer id) {
