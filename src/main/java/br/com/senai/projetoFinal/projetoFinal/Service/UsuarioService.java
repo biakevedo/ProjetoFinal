@@ -3,6 +3,7 @@ package br.com.senai.projetoFinal.projetoFinal.Service;
 import br.com.senai.projetoFinal.projetoFinal.Repository.UsuarioRepository;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.CadastrarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.ListarUsuarioDTO;
+import br.com.senai.projetoFinal.projetoFinal.dto.usuario.GetByIdUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +21,13 @@ public class UsuarioService {
     }
 
     public CadastrarUsuarioDTO cadastrarUsuario(CadastrarUsuarioDTO cl) {
-        // 2. Cria uma nova instância da ENTIDADE 'Tag', que será salva.
-        Usuario novoUsuario = new  Usuario();
+
+        Usuario novoUsuario = new Usuario();
 
         novoUsuario.setNomeCompleto(cl.getNomeCompleto());
         novoUsuario.setEmail(cl.getEmail());
         novoUsuario.setSenha(cl.getSenha());
-        novoUsuario.setDataCadastro(OffsetDateTime.now());// Associa o usuário completo que buscamos
+        novoUsuario.setDataCadastro(OffsetDateTime.now());
 
         usuarioRepository.save(novoUsuario);
 
@@ -34,7 +35,8 @@ public class UsuarioService {
     }
 
     public Usuario buscarPorId(Integer id) {
-        return usuarioRepository.findById(id).orElse(null);
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario não encontrado com id " + id));
     }
 
     public List<ListarUsuarioDTO> listarTodosDTO () {
@@ -54,28 +56,33 @@ public class UsuarioService {
         return dto;
     }
 
-    public Usuario deletarUsuario(Integer id) {
+    public GetByIdUsuarioDTO deletarUsuario(Integer id) {
         Usuario usuario = buscarPorId(id);
 
         if (usuario == null) {
             return null;
         }
-        usuarioRepository.delete(usuario);
-        return usuario;
+        GetByIdUsuarioDTO dto = new GetByIdUsuarioDTO(usuario.getEmail(), usuario.getNomeCompleto());
+
+         usuarioRepository.delete(usuario);
+
+        return dto;
     }
 
-    public Usuario atualizarUsuario(Integer id, Usuario usuarioNovo) {
-        // 1. Procurar quem eu quero atualizar
-        Usuario usuarioAntigo = buscarPorId(id);
+    public ListarUsuarioDTO atualizarUsuario(Usuario usuarioNovo) {
+        Usuario usuarioAntigo = buscarPorId(usuarioNovo.getId());
 
         if (usuarioAntigo == null) {
             return null;
         }
 
         usuarioAntigo.setEmail(usuarioNovo.getEmail());
-        usuarioAntigo.setDataCadastro(usuarioNovo.getDataCadastro());
-        usuarioAntigo.setDataAlteracao(usuarioNovo.getDataAlteracao());
+        usuarioAntigo.setSenha(usuarioNovo.getSenha());
+        usuarioAntigo.setDataAlteracao(OffsetDateTime.now());
+        usuarioAntigo.setNomeCompleto(usuarioNovo.getNomeCompleto());
 
-        return usuarioRepository.save(usuarioAntigo);
+        Usuario usuarioAtualizado = usuarioRepository.save(usuarioAntigo);
+
+        return converterParaListagemDTO(usuarioAtualizado);
     }
 }

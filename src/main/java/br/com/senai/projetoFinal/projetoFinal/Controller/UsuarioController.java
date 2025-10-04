@@ -2,6 +2,7 @@ package br.com.senai.projetoFinal.projetoFinal.Controller;
 
 import br.com.senai.projetoFinal.projetoFinal.Service.UsuarioService;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.CadastrarUsuarioDTO;
+import br.com.senai.projetoFinal.projetoFinal.dto.usuario.GetByIdUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.ListarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,8 +26,8 @@ public class UsuarioController {
 
     @GetMapping
     @Operation(
-            summary = "Lista todos os clientes",
-            description = "Lista todos os clientes sem nenhuma restricao"
+            summary = "Lista todos os usuarios",
+            description = "Lista todos os usuarios sem nenhuma restricao"
     )
     public ResponseEntity<List<ListarUsuarioDTO>> listar() {
         List<ListarUsuarioDTO> usuario = usuarioService.listarTodosDTO();
@@ -52,8 +53,7 @@ public class UsuarioController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletarCliente(@PathVariable Integer id) {
-        // 1. Verifico se o cliente existe
-        Usuario cliente = usuarioService.deletarUsuario(id);
+        GetByIdUsuarioDTO cliente = usuarioService.deletarUsuario(id);
 
         if (cliente == null) {
             return ResponseEntity.status(404)
@@ -64,9 +64,9 @@ public class UsuarioController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizarCliente(@PathVariable Integer id, @RequestBody Usuario usuario) {
+    public ResponseEntity<?> atualizarUsuario(@RequestBody Usuario usuario) {
 
-        Usuario usuarioAtualizado = usuarioService.atualizarUsuario(id, usuario);
+        ListarUsuarioDTO usuarioAtualizado = usuarioService.atualizarUsuario(usuario);
 
         if (usuarioAtualizado == null) {
             return ResponseEntity.status(404).body("cliente nao encontrado!");
