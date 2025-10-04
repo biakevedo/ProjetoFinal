@@ -23,16 +23,13 @@ public class UsuarioService {
         // 2. Cria uma nova instância da ENTIDADE 'Tag', que será salva.
         Usuario novoUsuario = new  Usuario();
 
-        // 3. Mapeia os dados da DTO e da entidade buscada para a nova entidade.
         novoUsuario.setNomeCompleto(cl.getNomeCompleto());
         novoUsuario.setEmail(cl.getEmail());
         novoUsuario.setSenha(cl.getSenha());
         novoUsuario.setDataCadastro(OffsetDateTime.now());// Associa o usuário completo que buscamos
 
-        // 4. Salva a entidade preenchida no banco.
         usuarioRepository.save(novoUsuario);
 
-        // 5. Retorna a DTO original para confirmar os dados que foram enviados.
         return cl;
     }
 
@@ -41,12 +38,9 @@ public class UsuarioService {
     }
 
     public List<ListarUsuarioDTO> listarTodosDTO () {
-        // 1. Busca todas as entidades do banco
         List<Usuario> tags = usuarioRepository.findAll();
 
-        // 2. Mapeia a lista de Entidades para uma lista de DTOs
         return tags.stream()
-                // Usa o método auxiliar de conversão
                 .map(this::converterParaListagemDTO)
                 .collect(Collectors.toList());
     }
@@ -55,7 +49,6 @@ public class UsuarioService {
         ListarUsuarioDTO dto = new ListarUsuarioDTO();
 
         dto.setEmail(usuario.getEmail());
-        dto.setDataCadastro(usuario.getDataCadastro());
         dto.setNomeCompleto(usuario.getNomeCompleto());
 
         return dto;
@@ -75,12 +68,10 @@ public class UsuarioService {
         // 1. Procurar quem eu quero atualizar
         Usuario usuarioAntigo = buscarPorId(id);
 
-        // 2. Se eu não achar, retorno nulo
         if (usuarioAntigo == null) {
             return null;
         }
 
-        usuarioAntigo.setSenha(usuarioNovo.getSenha());
         usuarioAntigo.setEmail(usuarioNovo.getEmail());
         usuarioAntigo.setDataCadastro(usuarioNovo.getDataCadastro());
         usuarioAntigo.setDataAlteracao(usuarioNovo.getDataAlteracao());

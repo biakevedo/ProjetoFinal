@@ -7,12 +7,8 @@ import java.time.OffsetDateTime;
 @Data
 public class CadastrarUsuarioDTO {
 
-
-
     private String email;
-
     private String senha;
-
     private String nomeCompleto;
 
 }

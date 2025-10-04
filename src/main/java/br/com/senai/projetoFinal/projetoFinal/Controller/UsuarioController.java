@@ -28,42 +28,24 @@ public class UsuarioController {
             summary = "Lista todos os clientes",
             description = "Lista todos os clientes sem nenhuma restricao"
     )
-
     public ResponseEntity<List<ListarUsuarioDTO>> listar() {
-        // Chama o serviço que já retorna a lista no formato correto (DTO)
         List<ListarUsuarioDTO> usuario = usuarioService.listarTodosDTO();
-        // Retorna 200 OK com a lista no corpo da report
         return ResponseEntity.ok(usuario);
-
     }
-
-
 
     @PostMapping
     public ResponseEntity<CadastrarUsuarioDTO> cadastrar(@RequestBody CadastrarUsuarioDTO usuario)
     {
-        // 1. Tentar cadastrar o cliente
         usuarioService.cadastrarUsuario(usuario);
-
-        // Codigo 200 - OK
-        //return ResponseEntity.ok(usuario);
-
-        // Codigo 201 - CREATED
         return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
     }
 
-    // Buscar Cliente por id
-    // GET, POST, PUT, DELETE
     @GetMapping("/{id}")
-    // Path Variable -> Recebe um valor no LINK
-    // Request Body -> Recebe dados pelo corpo
     public ResponseEntity<?> buscarUsuarioPorId(@PathVariable Integer id) {
-        // 1. Procurar e guardar o Cliente
         Usuario cliente = usuarioService.buscarPorId(id);
 
         if (cliente == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("usuario" + id + " nao encontrado!");
-
         }
         return ResponseEntity.ok(cliente);
     }
@@ -73,12 +55,10 @@ public class UsuarioController {
         // 1. Verifico se o cliente existe
         Usuario cliente = usuarioService.deletarUsuario(id);
 
-        // 2. Se não existir retorno erro
         if (cliente == null) {
             return ResponseEntity.status(404)
                     .body("Usuario " + id + " não encontrado!");
         }
-        // 3. Se existir, retorno ok
         return ResponseEntity.ok(cliente);
     }
 
