@@ -7,52 +7,61 @@ import java.util.List;
 
 public class CadastrarAnotacaoDTO {
 
-    @NotBlank(message = "O título é obrigatório")
-    private String titulo;
+        @NotBlank(message = "O título é obrigatório")
+        private String titulo;
 
-    @NotBlank(message = "A descrição é obrigatória")
-    private String descricao;
+        @NotBlank(message = "A anotação é obrigatória")
+        private String anotacao; // era "descricao"
 
-    private String imagemUrl;
+        private String imagem;
 
-    @NotNull(message = "O usuário é obrigatório")
-    private Integer usuarioId;
+        @NotNull(message = "O usuário é obrigatório")
+        private Integer usuarioId;
 
-    private List<String> tags;
+        private String status = "ativo"; // valor padrão
 
-    // Getters e setters
-    public String getTitulo() {
-        return titulo;
-    }
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
+        private List<String> tags;
 
-    public String getDescricao() {
-        return descricao;
-    }
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
+        // Getters e setters
+        public String getTitulo() {
+            return titulo;
+        }
+        public void setTitulo(String titulo) {
+            this.titulo = titulo;
+        }
 
-    public String getImagemUrl() {
-        return imagemUrl;
-    }
-    public void setImagemUrl(String imagemUrl) {
-        this.imagemUrl = imagemUrl;
-    }
+        public String getAnotacao() {
+            return anotacao;
+        }
+        public void setAnotacao(String anotacao) {
+            this.anotacao = anotacao;
+        }
 
-    public Integer getUsuarioId() {
-        return usuarioId;
-    }
-    public void setUsuarioId(Integer usuarioId) {
-        this.usuarioId = usuarioId;
-    }
+        public String getImagem() {
+            return imagem;
+        }
+        public void setImagem(String imagem) {
+            this.imagem = imagem;
+        }
 
-    public List<String> getTags() {
-        return tags;
+        public Integer getUsuarioId() {
+            return usuarioId;
+        }
+        public void setUsuarioId(Integer usuarioId) {
+            this.usuarioId = usuarioId;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public List<String> getTags() {
+            return tags;
+        }
+        public void setTags(List<String> tags) {
+            this.tags = tags;
+        }
     }
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-}
