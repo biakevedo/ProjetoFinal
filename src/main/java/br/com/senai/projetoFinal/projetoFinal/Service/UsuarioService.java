@@ -15,14 +15,8 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-
     public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
-    }
-
-    public List<Usuario> listarTodos() {
-        return usuarioRepository.findAll();
-
     }
 
     public CadastrarUsuarioDTO cadastrarUsuario(CadastrarUsuarioDTO cl) {
@@ -40,13 +34,10 @@ public class UsuarioService {
 
         // 5. Retorna a DTO original para confirmar os dados que foram enviados.
         return cl;
-
     }
 
     public Usuario buscarPorId(Integer id) {
         return usuarioRepository.findById(id).orElse(null);
-
-
     }
 
     public List<ListarUsuarioDTO> listarTodosDTO () {
@@ -63,7 +54,8 @@ public class UsuarioService {
     private ListarUsuarioDTO converterParaListagemDTO (Usuario usuario) {
         ListarUsuarioDTO dto = new ListarUsuarioDTO();
 
-        // Mapeamento campo a campo
+        dto.setEmail(usuario.getEmail());
+        dto.setDataCadastro(usuario.getDataCadastro());
         dto.setNomeCompleto(usuario.getNomeCompleto());
 
         return dto;
@@ -74,12 +66,9 @@ public class UsuarioService {
 
         if (usuario == null) {
             return null;
-
         }
-
         usuarioRepository.delete(usuario);
         return usuario;
-
     }
 
     public Usuario atualizarUsuario(Integer id, Usuario usuarioNovo) {
@@ -89,16 +78,13 @@ public class UsuarioService {
         // 2. Se eu não achar, retorno nulo
         if (usuarioAntigo == null) {
             return null;
-
         }
 
         usuarioAntigo.setSenha(usuarioNovo.getSenha());
         usuarioAntigo.setEmail(usuarioNovo.getEmail());
         usuarioAntigo.setDataCadastro(usuarioNovo.getDataCadastro());
         usuarioAntigo.setDataAlteracao(usuarioNovo.getDataAlteracao());
+
         return usuarioRepository.save(usuarioAntigo);
-
-
-
     }
 }
