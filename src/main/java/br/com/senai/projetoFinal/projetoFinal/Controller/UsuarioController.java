@@ -40,22 +40,16 @@ public class UsuarioController {
 
 
     @PostMapping
-    public ResponseEntity<CadastrarUsuarioDTO> cadastrar(@RequestBody CadastrarUsuarioDTO usuario
-    )
-
+    public ResponseEntity<CadastrarUsuarioDTO> cadastrar(@RequestBody CadastrarUsuarioDTO usuario)
     {
-
         // 1. Tentar cadastrar o cliente
         usuarioService.cadastrarUsuario(usuario);
-
 
         // Codigo 200 - OK
         //return ResponseEntity.ok(usuario);
 
         // Codigo 201 - CREATED
         return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
-
-
     }
 
     // Buscar Cliente por id
@@ -71,9 +65,7 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("usuario" + id + " nao encontrado!");
 
         }
-
         return ResponseEntity.ok(cliente);
-
     }
 
     @DeleteMapping("/{id}")
@@ -86,7 +78,6 @@ public class UsuarioController {
             return ResponseEntity.status(404)
                     .body("Usuario " + id + " não encontrado!");
         }
-
         // 3. Se existir, retorno ok
         return ResponseEntity.ok(cliente);
     }
@@ -99,14 +90,9 @@ public class UsuarioController {
 
         if (usuarioAtualizado == null) {
             return ResponseEntity.status(404).body("cliente nao encontrado!");
-
         }
-
         return ResponseEntity.ok(usuarioAtualizado);
-
     }
-
-
 }
 
 
