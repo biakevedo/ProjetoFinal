@@ -1,6 +1,8 @@
 package br.com.senai.projetoFinal.projetoFinal.Controller;
 
 import br.com.senai.projetoFinal.projetoFinal.Service.UsuarioService;
+import br.com.senai.projetoFinal.projetoFinal.dto.usuario.CadastrarUsuarioDTO;
+import br.com.senai.projetoFinal.projetoFinal.dto.usuario.ListarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,9 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/usuario")
-@Tag(name = "Controller de CLiente", description = "Metodos de Usuarios")
+@RequestMapping("api/usuario")
+@Tag(name = "Controller de Usuario", description = "Metodos de Usuarios")
 public class UsuarioController {
+
     private final UsuarioService usuarioService;
 
     public UsuarioController(UsuarioService usuarioService) {
@@ -25,31 +28,28 @@ public class UsuarioController {
             summary = "Lista todos os clientes",
             description = "Lista todos os clientes sem nenhuma restricao"
     )
-    public ResponseEntity<List<Usuario>> listarUsuario(){
-        // 1. Pegar a lista de clientes
-        List<Usuario> clientes = usuarioService.listarTodos();
-        return ResponseEntity.ok(clientes);
+
+    public ResponseEntity<List<ListarUsuarioDTO>> listar() {
+        // Chama o serviço que já retorna a lista no formato correto (DTO)
+        List<ListarUsuarioDTO> usuario = usuarioService.listarTodosDTO();
+        // Retorna 200 OK com a lista no corpo da report
+        return ResponseEntity.ok(usuario);
 
     }
 
+
+
     @PostMapping
-    public ResponseEntity<Usuario> cadastrarCliente (
-            @RequestBody Usuario cliente
-    )
-
+    public ResponseEntity<CadastrarUsuarioDTO> cadastrar(@RequestBody CadastrarUsuarioDTO usuario)
     {
-
         // 1. Tentar cadastrar o cliente
-        usuarioService.cadastrarUsuario(cliente);
-
+        usuarioService.cadastrarUsuario(usuario);
 
         // Codigo 200 - OK
-        //return ResponseEntity.ok(cliente);
+        //return ResponseEntity.ok(usuario);
 
         // Codigo 201 - CREATED
-        return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
-
-
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
     }
 
     // Buscar Cliente por id
@@ -65,9 +65,7 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("usuario" + id + " nao encontrado!");
 
         }
-
         return ResponseEntity.ok(cliente);
-
     }
 
     @DeleteMapping("/{id}")
@@ -80,7 +78,6 @@ public class UsuarioController {
             return ResponseEntity.status(404)
                     .body("Usuario " + id + " não encontrado!");
         }
-
         // 3. Se existir, retorno ok
         return ResponseEntity.ok(cliente);
     }
@@ -93,14 +90,9 @@ public class UsuarioController {
 
         if (usuarioAtualizado == null) {
             return ResponseEntity.status(404).body("cliente nao encontrado!");
-
         }
-
         return ResponseEntity.ok(usuarioAtualizado);
-
     }
-
-
 }
 
 
