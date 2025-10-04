@@ -4,12 +4,12 @@ import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import lombok.Data;
 
 @Data
-public class RetornoTagCreateDTO {
+public class CriaTagDTO {
 
     private String nomeTag;
-    private Usuario idUsuario;
+    private Integer idUsuario;
 
-    public RetornoTagCreateDTO(String nomeTag, Usuario idUsuario) {
+    public CriaTagDTO(String nomeTag, Integer idUsuario) {
         this.nomeTag = nomeTag;
         this.idUsuario = idUsuario;
     }
