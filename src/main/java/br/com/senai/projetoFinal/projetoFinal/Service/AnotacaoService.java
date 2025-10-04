@@ -4,6 +4,7 @@ import br.com.senai.projetoFinal.projetoFinal.model.Anotacao;
 import br.com.senai.projetoFinal.projetoFinal.Repository.AnotacaoRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
@@ -27,6 +28,9 @@ import java.util.List;
             if (anotacao.getStatus() == null || anotacao.getStatus().isEmpty()) {
                 throw new IllegalArgumentException("Status é obrigatório");
             }
+
+            anotacao.setDataCadastro(OffsetDateTime.now());
+
             return anotacaoRepository.save(anotacao);
         }
 
@@ -54,6 +58,7 @@ import java.util.List;
             anotacaoAntiga.setStatus(anotacaoNova.getStatus());
             anotacaoAntiga.setAnotacao(anotacaoNova.getAnotacao());
             anotacaoAntiga.setImagem(anotacaoNova.getImagem());
+            anotacaoAntiga.setDataAlteracao(OffsetDateTime.now());
 
             return anotacaoRepository.save(anotacaoAntiga);
         }

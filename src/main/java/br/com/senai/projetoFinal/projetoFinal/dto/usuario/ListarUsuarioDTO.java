@@ -8,9 +8,5 @@ import java.time.OffsetDateTime;
 public class ListarUsuarioDTO {
 
     private String email;
-
-    private OffsetDateTime dataCadastro;
-
     private String nomeCompleto;
-
 }
