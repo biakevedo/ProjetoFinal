@@ -86,39 +86,30 @@ public class AnotacaoService {
     }
 
     // Conversor para DTO simples (id e titulo)
-
     public AnotacaoDTO ConversorAnotacaoDTO(Anotacao anotacao) {
-
         // 1. Criamos nosso objeto DTO de anotação, ainda vazio.
-       AnotacaoDTO dto = new AnotacaoDTO();
+        AnotacaoDTO dto = new AnotacaoDTO();
 
         // 2. Fazemos o "De-Para" dos campos simples.
         dto.setId(anotacao.getId());
         dto.setTitulo(anotacao.getTitulo());
         dto.setAnotacao(anotacao.getAnotacao());
 
-
-
+        // 3. Converter as Tags associadas à anotação
         List<ListarTagDTO> tagsDto = anotacao.getTagAnotacao().stream()
-                .map(associacao -> converterTagParaDTO(associacao.getId()))
+                .map(associacao -> converterTagParaDTO(associacao.getIdTag()))  // Corrigido aqui: acesso ao campo TagModel
                 .collect(Collectors.toList());
 
         dto.setTags(tagsDto);
 
         return dto;
-
     }
 
-    // Em AnotacaoService.java
+    // Método para converter TagModel para ListarTagDTO
     private ListarTagDTO converterTagParaDTO(TagModel tag) {
         ListarTagDTO dto = new ListarTagDTO();
         dto.setId(tag.getId());
         dto.setNome(tag.getNome());
         return dto;
-
     }
-        }
-
-
-
-
+}
