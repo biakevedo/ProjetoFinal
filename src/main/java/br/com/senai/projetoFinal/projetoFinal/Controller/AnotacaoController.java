@@ -1,8 +1,8 @@
 package br.com.senai.projetoFinal.projetoFinal.Controller;
 
 import br.com.senai.projetoFinal.projetoFinal.Service.AnotacaoService;
+import br.com.senai.projetoFinal.projetoFinal.dto.anotacao.AnotacaoDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.anotacao.CadastrarAnotacaoDTO;
-import br.com.senai.projetoFinal.projetoFinal.dto.anotacao.ListarAnotacaoDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Anotacao;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,7 +32,7 @@ public class AnotacaoController {
             return ResponseEntity.ok(anotacoes);
         }
 
-        // ✅ Buscar anotação por ID
+        // Buscar anotação por ID
         @GetMapping("/{id}")
         @Operation(summary = "Buscar anotação por ID")
         public ResponseEntity<Anotacao> buscarPorId(@PathVariable Integer id) {
@@ -75,11 +75,19 @@ public class AnotacaoController {
         }
     // Em AnotacaoController.java
     @GetMapping("/{email}")
-    public ResponseEntity<List<ListarAnotacaoDTO>> listarAnotacoesPorEmail(@PathVariable String email, Authentication authentication) {
+    public ResponseEntity<List<AnotacaoDTO>> listarAnotacoesPorEmail(@PathVariable String email) {
         // 2. Anota o pedido e envia para a cozinha (Service)
-        List<ListarAnotacaoDTO> anotacoesDTO = anotacaoService.listarAnotacoesPorEmail(email);
+        List<AnotacaoDTO> anotacoesDTO = anotacaoService.listarAnotacoesPorEmail(email);
 
         // 3. Pega o prato pronto e entrega ao cliente com status 200 OK.
         return ResponseEntity.ok(anotacoesDTO);
     }
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<AnotacaoDTO> buscarAnotacao(@PathVariable Integer id) {
+//        AnotacaoDTO anotacaoDTO = anotacaoService.buscarAnotacaoComTags(id);
+//        if (anotacaoDTO == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        return ResponseEntity.ok(anotacaoDTO);
+//    }
+}
