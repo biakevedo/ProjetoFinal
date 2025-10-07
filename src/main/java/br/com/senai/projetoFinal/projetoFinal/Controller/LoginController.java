@@ -35,7 +35,7 @@ public class LoginController {
 
     // @PostMapping: Mapeia este método para requisições do tipo POST na URL do controller
     // (ou seja, /api/auth).
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         // @RequestBody: Pega o corpo da requisição (JSON) e o converte para um objeto LoginRequest.
 
