@@ -46,10 +46,10 @@ public class TagService {
         return dtos;
     }
 
-    public List<RetornoGetAllTagDTO> findByUsuarioId(Integer usuarioId){
+    public List<RetornoTagCreateDTO> findByUsuarioId(Integer usuarioId){
         List<TagModel> usuarios = tagRepository.findByUsuarioId(usuarioId);
 
-        List<RetornoGetAllTagDTO> dtos = usuarios.stream()
+        List<RetornoTagCreateDTO> dtos = usuarios.stream()
                 .map(usuario -> new RetornoTagCreateDTO(usuario.getNome(), usuario.getUsuario()))
                 .collect(Collectors.toList());
         return dtos;
