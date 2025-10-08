@@ -9,8 +9,19 @@ public class RetornoGetAllTagDTO {
     private String nome;
     private ListarUsuarioDTO usuario;
 
-    public void RetornoTagCreateDTO(String nomeTag, ListarUsuarioDTO usuario) {
-        this.nome = nomeTag;
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public ListarUsuarioDTO getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(ListarUsuarioDTO usuario) {
         this.usuario = usuario;
     }
 

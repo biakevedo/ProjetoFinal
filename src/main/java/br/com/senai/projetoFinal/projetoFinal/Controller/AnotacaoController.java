@@ -1,10 +1,11 @@
 package br.com.senai.projetoFinal.projetoFinal.Controller;
 
 import br.com.senai.projetoFinal.projetoFinal.Service.AnotacaoService;
+import br.com.senai.projetoFinal.projetoFinal.dto.anotacao.AnotacaoDTO;
+import br.com.senai.projetoFinal.projetoFinal.dto.anotacao.CadastrarAnotacaoDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Anotacao;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,63 +14,80 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/anotacao")
 @Tag(name = "Controller de Anotação", description = "Métodos de Anotação")
-    public class AnotacaoController {
+
+public class AnotacaoController {
+
 
         private final AnotacaoService anotacaoService;
 
         public AnotacaoController(AnotacaoService anotacaoService) {
             this.anotacaoService = anotacaoService;
         }
-@GetMapping
-@Operation(
-                summary = "Lista todas as anotações",
-                description = "Lista todas as anotações sem nenhuma restrição"
-        )
+
+        // ✅ Listar todas as anotações
+        @GetMapping
+        @Operation(summary = "Listar todas as anotações")
         public ResponseEntity<List<Anotacao>> listarAnotacoes() {
             List<Anotacao> anotacoes = anotacaoService.listarTodos();
             return ResponseEntity.ok(anotacoes);
         }
 
-@PostMapping
-        public ResponseEntity<Anotacao> cadastrarAnotacao(@RequestBody Anotacao anotacao) {
-            anotacaoService.cadastrarAnotacao(anotacao);
-            return ResponseEntity.status(HttpStatus.CREATED).body(anotacao);
-        }
-
-@GetMapping("/{id}")
-        public ResponseEntity<?> buscarAnotacaoPorId(@PathVariable Integer id) {
+        // Buscar anotação por ID
+        @GetMapping("/{id}")
+        @Operation(summary = "Buscar anotação por ID")
+        public ResponseEntity<Anotacao> buscarPorId(@PathVariable Integer id) {
             Anotacao anotacao = anotacaoService.buscarPorId(id);
-
             if (anotacao == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Anotação com ID " + id + " não encontrada!");
+                return ResponseEntity.notFound().build();
             }
-
             return ResponseEntity.ok(anotacao);
         }
 
-@DeleteMapping("/{id}")
-        public ResponseEntity<?> deletarAnotacao(@PathVariable Integer id) {
-            Anotacao anotacao = anotacaoService.deletarAnotacao(id);
-
-            if (anotacao == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Anotação com ID " + id + " não encontrada!");
-            }
-
-            return ResponseEntity.ok(anotacao);
+        // Cadastrar nova anotação
+        @PostMapping
+        @Operation(summary = "Cadastrar nova anotação")
+        public ResponseEntity<CadastrarAnotacaoDTO> cadastrarAnotacao(@RequestBody CadastrarAnotacaoDTO dto) {
+            CadastrarAnotacaoDTO nova = anotacaoService.cadastrarAnotacao(dto);
+            return ResponseEntity.status(201).body(nova);
         }
 
-@PutMapping("/{id}")
-        public ResponseEntity<?> atualizarAnotacao(@PathVariable Integer id, @RequestBody Anotacao anotacao) {
-            Anotacao anotacaoAtualizada = anotacaoService.atualizarAnotacao(id, anotacao);
-
-            if (anotacaoAtualizada == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Anotação com ID " + id + " não encontrada!");
+        // Atualizar anotação existente
+        @PutMapping("/{id}")
+        @Operation(summary = "Atualizar anotação")
+        public ResponseEntity<Anotacao> atualizarAnotacao(@PathVariable Integer id,
+                                                          @RequestBody Anotacao novaAnotacao) {
+            Anotacao atualizada = anotacaoService.atualizarAnotacao(id, novaAnotacao);
+            if (atualizada == null) {
+                return ResponseEntity.notFound().build();
             }
-
-            return ResponseEntity.ok(anotacaoAtualizada);
+            return ResponseEntity.ok(atualizada);
         }
+
+        //  Deletar anotação
+        @DeleteMapping("/{id}")
+        @Operation(summary = "Deletar anotação")
+        public ResponseEntity<Void> deletarAnotacao(@PathVariable Integer id) {
+            Anotacao deletada = anotacaoService.deletarAnotacao(id);
+            if (deletada == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.noContent().build();
+        }
+    // Em AnotacaoController.java
+    @GetMapping("/{email}")
+    public ResponseEntity<List<AnotacaoDTO>> listarAnotacoesPorEmail(@PathVariable String email) {
+        // 2. Anota o pedido e envia para a cozinha (Service)
+        List<AnotacaoDTO> anotacoesDTO = anotacaoService.listarAnotacoesPorEmail(email);
+
+        // 3. Pega o prato pronto e entrega ao cliente com status 200 OK.
+        return ResponseEntity.ok(anotacoesDTO);
     }
-
+//    @GetMapping("/{id}")
+//    public ResponseEntity<AnotacaoDTO> buscarAnotacao(@PathVariable Integer id) {
+//        AnotacaoDTO anotacaoDTO = anotacaoService.buscarAnotacaoComTags(id);
+//        if (anotacaoDTO == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        return ResponseEntity.ok(anotacaoDTO);
+//    }
+}
