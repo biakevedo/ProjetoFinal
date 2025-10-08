@@ -18,12 +18,12 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final EmailService emailService;
+    private final PasswordEncoder passwordEncoder;
 
     public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.usuarioRepository = usuarioRepository;
         this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
-
     }
 
     public CadastrarUsuarioDTO cadastrarUsuario(CadastrarUsuarioDTO cl) {
@@ -97,7 +97,7 @@ public class UsuarioService {
     public void processForgotPassword(String email) {
         usuarioRepository.findByEmail(email).ifPresent(usuario -> {
             String novaSenha = RandomStringUtils.randomAlphanumeric(10);
-            String senhaCodificada = encoder.encode(novaSenha);
+            String senhaCodificada = passwordEncoder.encode(novaSenha);
             usuario.setSenha(senhaCodificada);
             usuarioRepository.save(usuario);
             emailService.enviarEmail(usuario.getEmail(), novaSenha);
