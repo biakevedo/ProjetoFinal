@@ -1,7 +1,7 @@
 package br.com.senai.projetoFinal.projetoFinal.Controller;
 
 import br.com.senai.projetoFinal.projetoFinal.Service.TagService;
-import br.com.senai.projetoFinal.projetoFinal.dto.tag.CriaTagDTO;
+import br.com.senai.projetoFinal.projetoFinal.dto.tag.RetornoTagCreateDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.HttpStatus;
@@ -29,8 +29,8 @@ public class TagController {
     @Operation(
             summary = "Cadastra uma tag"
     )
-    public ResponseEntity<?> criaTags(@RequestBody CriaTagDTO t) {
-        CriaTagDTO tag = tagService.cadastraTag(t);
+    public ResponseEntity<?> criaTags(@RequestBody RetornoTagCreateDTO t) {
+        RetornoTagCreateDTO tag = tagService.cadastraTag(t);
 
         if (tag == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao cadastrar tag");
@@ -40,7 +40,7 @@ public class TagController {
             throw new IllegalArgumentException("Nome da tag precisa ser informado");
         }
 
-        if (tag.getIdUsuario() == null || tag.getIdUsuario() == 0) {
+        if (tag.getIdUsuario() == null || tag.getIdUsuario().getId() == 0) {
             throw new IllegalArgumentException("Necessario associar usuario com a tag");
         }
 
@@ -52,7 +52,7 @@ public class TagController {
             summary = "Busca uma tag pelo nome"
     )
     public ResponseEntity<?> filtraTag(@Parameter String nome) {
-        List<CriaTagDTO> tag = tagService.buscaTag(nome);
+        List<RetornoTagCreateDTO> tag = tagService.buscaTag(nome);
 
         if (tag.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tag nao encontrada");

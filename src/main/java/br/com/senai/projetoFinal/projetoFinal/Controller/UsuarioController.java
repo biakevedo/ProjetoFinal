@@ -4,9 +4,11 @@ import br.com.senai.projetoFinal.projetoFinal.Service.UsuarioService;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.CadastrarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.GetByIdUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.ListarUsuarioDTO;
+import br.com.senai.projetoFinal.projetoFinal.dto.usuario.ResetSenhaDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -73,6 +75,13 @@ public class UsuarioController {
         }
         return ResponseEntity.ok(usuarioAtualizado);
     }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@Valid @RequestBody ResetSenhaDTO resetarSenhaDTO) {
+        usuarioService.processForgotPassword(resetarSenhaDTO.getEmail());
+        return ResponseEntity.ok("Se um usuário com este e-mail existir, uma nova senha será enviada.");
+    }
+
 }
 
 
