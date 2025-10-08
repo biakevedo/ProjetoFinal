@@ -22,4 +22,27 @@ public class TagAnotacao {
     @JoinColumn(name = "id_anotacao", nullable = false)
     private Anotacao idAnotacao;
 
+    public TagAnotacaoId getId() {
+        return id;
+    }
+
+    public void setId(TagAnotacaoId id) {
+        this.id = id;
+    }
+
+    public TagModel getIdTag() {
+        return idTag;
+    }
+
+    public void setIdTag(TagModel idTag) {
+        this.idTag = idTag;
+    }
+
+    public Anotacao getIdAnotacao() {
+        return idAnotacao;
+    }
+
+    public void setIdAnotacao(Anotacao idAnotacao) {
+        this.idAnotacao = idAnotacao;
+    }
 }
