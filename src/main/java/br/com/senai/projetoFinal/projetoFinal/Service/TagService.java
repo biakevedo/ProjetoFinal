@@ -2,7 +2,7 @@ package br.com.senai.projetoFinal.projetoFinal.Service;
 
 import br.com.senai.projetoFinal.projetoFinal.Repository.TagRepository;
 import br.com.senai.projetoFinal.projetoFinal.Repository.UsuarioRepository;
-import br.com.senai.projetoFinal.projetoFinal.dto.tag.CriaTagDTO;
+import br.com.senai.projetoFinal.projetoFinal.dto.tag.RetornoTagCreateDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.TagModel;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,8 +22,8 @@ public class TagService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public CriaTagDTO cadastraTag(CriaTagDTO tag) {
-        Integer usuarioId = tag.getIdUsuario();
+    public RetornoTagCreateDTO cadastraTag(RetornoTagCreateDTO tag) {
+        Integer usuarioId = tag.getIdUsuario().getId();
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com o ID: " + usuarioId));
 
@@ -37,20 +37,22 @@ public class TagService {
         return tag;
     }
 
-    public List<CriaTagDTO> buscaTag(String tagNome) {
+    public List<RetornoTagCreateDTO> buscaTag(String tagNome) {
         List<TagModel> tags = tagRepository.findByNomeContainingIgnoreCase(tagNome);
-        List<CriaTagDTO> dtos = tags.stream()
-                .map(tag -> new CriaTagDTO(tag.getNome(), tag.getId()))
+        List<RetornoTagCreateDTO> dtos = tags.stream()
+                .map(tag -> new RetornoTagCreateDTO(tag.getNome(), tag.getUsuario()))
                 .collect(Collectors.toList());
         return dtos;
     }
 
-    public List<CriaTagDTO> findByUsuarioId(Integer usuarioId){
+    public List<RetornoTagCreateDTO> findByUsuarioId(Integer usuarioId){
         List<TagModel> usuarios = tagRepository.findByUsuarioId(usuarioId);
 
-        List<CriaTagDTO> dtos = usuarios.stream()
-                .map(usuario -> new CriaTagDTO(usuario.getNome(), usuario.getId()))
+        List<RetornoTagCreateDTO> dtos = usuarios.stream()
+                .map(usuario -> new RetornoTagCreateDTO(usuario.getNome(), usuario.getUsuario()))
                 .collect(Collectors.toList());
         return dtos;
     }
+
+
 }

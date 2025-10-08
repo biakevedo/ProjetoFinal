@@ -5,8 +5,9 @@ import br.com.senai.projetoFinal.projetoFinal.dto.usuario.CadastrarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.ListarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.GetByIdUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -18,10 +19,11 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final EmailService emailService;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, EmailService emailService) {
-
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.usuarioRepository = usuarioRepository;
         this.emailService = emailService;
+        this.passwordEncoder = passwordEncoder;
+
     }
 
     public CadastrarUsuarioDTO cadastrarUsuario(CadastrarUsuarioDTO cl) {
@@ -30,8 +32,9 @@ public class UsuarioService {
 
         novoUsuario.setNomeCompleto(cl.getNomeCompleto());
         novoUsuario.setEmail(cl.getEmail());
-        novoUsuario.setSenha(cl.getSenha());
-        novoUsuario.setDataCadastro(OffsetDateTime.now());
+        String senhaCriptografada = passwordEncoder.encode(cl.getSenha());
+        novoUsuario.setSenha(senhaCriptografada);
+        novoUsuario.setDataCadastro(OffsetDateTime.now());// Associa o usuário completo que buscamos
 
         usuarioRepository.save(novoUsuario);
 
