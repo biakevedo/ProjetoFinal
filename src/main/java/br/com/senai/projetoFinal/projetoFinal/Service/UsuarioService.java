@@ -4,6 +4,7 @@ import br.com.senai.projetoFinal.projetoFinal.Repository.UsuarioRepository;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.CadastrarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.ListarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -15,9 +16,11 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Usuario> listarTodos() {
@@ -32,7 +35,8 @@ public class UsuarioService {
         // 3. Mapeia os dados da DTO e da entidade buscada para a nova entidade.
         novoUsuario.setNomeCompleto(cl.getNomeCompleto());
         novoUsuario.setEmail(cl.getEmail());
-        novoUsuario.setSenha(cl.getSenha());
+        String senhaCriptografada = passwordEncoder.encode(cl.getSenha());
+        novoUsuario.setSenha(senhaCriptografada);
         novoUsuario.setDataCadastro(OffsetDateTime.now());// Associa o usuário completo que buscamos
 
         // 4. Salva a entidade preenchida no banco.
