@@ -5,6 +5,7 @@ import br.com.senai.projetoFinal.projetoFinal.dto.usuario.CadastrarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.ListarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.GetByIdUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -15,9 +16,12 @@ import java.util.stream.Collectors;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final EmailService emailService;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, EmailService emailService) {
+
         this.usuarioRepository = usuarioRepository;
+        this.emailService = emailService;
     }
 
     public CadastrarUsuarioDTO cadastrarUsuario(CadastrarUsuarioDTO cl) {
@@ -84,5 +88,16 @@ public class UsuarioService {
         Usuario usuarioAtualizado = usuarioRepository.save(usuarioAntigo);
 
         return converterParaListagemDTO(usuarioAtualizado);
+    }
+
+
+    public void processForgotPassword(String email) {
+        usuarioRepository.findByEmail(email).ifPresent(usuario -> {
+            String novaSenha = RandomStringUtils.randomAlphanumeric(10);
+            String senhaCodificada = encoder.encode(novaSenha);
+            usuario.setSenha(senhaCodificada);
+            usuarioRepository.save(usuario);
+            emailService.enviarEmail(usuario.getEmail(), novaSenha);
+        });
     }
 }
