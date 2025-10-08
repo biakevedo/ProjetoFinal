@@ -2,7 +2,6 @@ package br.com.senai.projetoFinal.projetoFinal.Service;
 
 import br.com.senai.projetoFinal.projetoFinal.Repository.TagRepository;
 import br.com.senai.projetoFinal.projetoFinal.Repository.UsuarioRepository;
-import br.com.senai.projetoFinal.projetoFinal.dto.tag.RetornoGetAllTagDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.tag.RetornoTagCreateDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.TagModel;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;

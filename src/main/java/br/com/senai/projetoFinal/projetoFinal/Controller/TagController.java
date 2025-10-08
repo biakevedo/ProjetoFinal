@@ -35,6 +35,15 @@ public class TagController {
         if (tag == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao cadastrar tag");
         }
+
+        if (tag.getNomeTag() == null || tag.getNomeTag().isEmpty()) {
+            throw new IllegalArgumentException("Nome da tag precisa ser informado");
+        }
+
+        if (tag.getIdUsuario() == null || tag.getIdUsuario().getId() == 0) {
+            throw new IllegalArgumentException("Necessario associar usuario com a tag");
+        }
+
        return ResponseEntity.status(HttpStatus.CREATED).body(tag);
     }
 
