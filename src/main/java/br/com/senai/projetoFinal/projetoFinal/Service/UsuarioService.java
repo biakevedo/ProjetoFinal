@@ -5,6 +5,7 @@ import br.com.senai.projetoFinal.projetoFinal.dto.usuario.CadastrarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.ListarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.GetByIdUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -16,8 +17,11 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public CadastrarUsuarioDTO cadastrarUsuario(CadastrarUsuarioDTO cl) {
@@ -26,8 +30,9 @@ public class UsuarioService {
 
         novoUsuario.setNomeCompleto(cl.getNomeCompleto());
         novoUsuario.setEmail(cl.getEmail());
-        novoUsuario.setSenha(cl.getSenha());
-        novoUsuario.setDataCadastro(OffsetDateTime.now());
+        String senhaCriptografada = passwordEncoder.encode(cl.getSenha());
+        novoUsuario.setSenha(senhaCriptografada);
+        novoUsuario.setDataCadastro(OffsetDateTime.now());// Associa o usuário completo que buscamos
 
         usuarioRepository.save(novoUsuario);
 
