@@ -78,7 +78,7 @@ public class TagController {
             summary = "Retorna todas as tags em uma lista"
     )
     public ResponseEntity<?> findByUsuarioId() {
-        List tag = tagService.findAll();
+        List tag = tagService.getAll();
 
         if (tag.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tags nao encontradas");
