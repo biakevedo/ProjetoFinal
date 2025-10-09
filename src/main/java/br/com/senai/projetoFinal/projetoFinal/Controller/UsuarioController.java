@@ -7,6 +7,7 @@ import br.com.senai.projetoFinal.projetoFinal.dto.usuario.ListarUsuarioDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.usuario.ResetSenhaDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Usuario;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/usuario")
 @Tag(name = "Controller de Usuario", description = "Metodos de Usuarios")
+@SecurityRequirement(name = "bearerAuth")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -37,7 +39,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<CadastrarUsuarioDTO> cadastrar(@RequestBody CadastrarUsuarioDTO usuario)
+    public ResponseEntity<CadastrarUsuarioDTO> cadastrar (@RequestBody CadastrarUsuarioDTO usuario)
     {
         usuarioService.cadastrarUsuario(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
@@ -83,6 +85,3 @@ public class UsuarioController {
     }
 
 }
-
-
-

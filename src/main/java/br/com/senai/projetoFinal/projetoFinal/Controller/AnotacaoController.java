@@ -5,6 +5,7 @@ import br.com.senai.projetoFinal.projetoFinal.dto.anotacao.AnotacaoDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.anotacao.CadastrarAnotacaoDTO;
 import br.com.senai.projetoFinal.projetoFinal.model.Anotacao;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/anotacao")
 @Tag(name = "Controller de Anotação", description = "Métodos de Anotação")
-
+@SecurityRequirement(name = "bearerAuth")
 public class AnotacaoController {
 
         private final AnotacaoService anotacaoService;

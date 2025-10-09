@@ -4,6 +4,7 @@ import br.com.senai.projetoFinal.projetoFinal.Service.TagService;
 import br.com.senai.projetoFinal.projetoFinal.dto.tag.RetornoTagCreateDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequestMapping("api/tag")
 
 @Tag(name = "Controller de Tag")
+@SecurityRequirement(name = "bearerAuth")
 public class TagController {
 
     private final TagService tagService;
