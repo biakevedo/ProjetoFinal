@@ -78,7 +78,7 @@ public class AnotacaoService {
 
     // Listar anotações por email do usuário, retornando ListarAnotacaoDTO (id e titulo)
     public List<AnotacaoDTO> listarAnotacoesPorEmail(String email) {
-        List<Anotacao> anotacoes = anotacaoRepository.findByUsuarioEmailCompleto(email);
+        List<Anotacao> anotacoes = anotacaoRepository.findByUsuarioEmail(email);
 
         return anotacoes.stream()
                 .map(this::ConversorAnotacaoDTO)

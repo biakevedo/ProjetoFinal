@@ -11,12 +11,7 @@ import java.util.List;
 @Repository
 public interface AnotacaoRepository extends JpaRepository<Anotacao, Integer> {
 
-    @Query("SELECT DISTINCT a FROM Anotacao a " +
-            "LEFT JOIN FETCH a.usuario u " +
-            "LEFT JOIN FETCH a.tagAnotacao ta " +
-            "LEFT JOIN FETCH ta.idTag t " +
-            "WHERE LOWER(u.email) = LOWER(:emailDoUsuario)")
-    List<Anotacao> findByUsuarioEmailCompleto(@Param("emailDoUsuario") String email);
+    List<Anotacao> findByUsuarioEmail( String email);
 }
 
 
