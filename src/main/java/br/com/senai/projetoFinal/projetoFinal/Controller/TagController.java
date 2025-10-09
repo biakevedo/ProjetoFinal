@@ -40,7 +40,7 @@ public class TagController {
             throw new IllegalArgumentException("Nome da tag precisa ser informado");
         }
 
-        if (tag.getIdUsuario() == null || tag.getIdUsuario().getId() == 0) {
+        if (tag.getIdUsuario() == null || tag.getIdUsuario() == 0) {
             throw new IllegalArgumentException("Necessario associar usuario com a tag");
         }
 
@@ -69,6 +69,19 @@ public class TagController {
 
         if (tag.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario nao encontrado");
+        }
+        return ResponseEntity.ok().body(tag);
+    }
+
+    @GetMapping("/getAll")
+    @Operation(
+            summary = "Retorna todas as tags em uma lista"
+    )
+    public ResponseEntity<?> findByUsuarioId() {
+        List tag = tagService.findAll();
+
+        if (tag.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tags nao encontradas");
         }
         return ResponseEntity.ok().body(tag);
     }

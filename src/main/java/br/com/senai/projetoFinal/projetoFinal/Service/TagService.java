@@ -23,7 +23,7 @@ public class TagService {
     }
 
     public RetornoTagCreateDTO cadastraTag(RetornoTagCreateDTO tag) {
-        Integer usuarioId = tag.getIdUsuario().getId();
+        Integer usuarioId = tag.getIdUsuario();
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com o ID: " + usuarioId));
 
@@ -47,6 +47,16 @@ public class TagService {
 
     public List<RetornoTagCreateDTO> findByUsuarioId(Integer usuarioId){
         List<TagModel> usuarios = tagRepository.findByUsuarioId(usuarioId);
+
+        List<RetornoTagCreateDTO> dtos = usuarios.stream()
+                .map(usuario -> new RetornoTagCreateDTO(usuario.getNome(), usuario.getUsuario()))
+                .collect(Collectors.toList());
+        return dtos;
+    }
+
+
+    public List<RetornoTagCreateDTO> getAll(){
+        List<TagModel> usuarios = tagRepository.findAll();
 
         List<RetornoTagCreateDTO> dtos = usuarios.stream()
                 .map(usuario -> new RetornoTagCreateDTO(usuario.getNome(), usuario.getUsuario()))
