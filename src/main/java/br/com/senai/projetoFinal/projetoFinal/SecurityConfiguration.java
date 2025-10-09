@@ -99,11 +99,23 @@ public class SecurityConfiguration {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Permite TODAS as requisições para QUALQUER endpoint.
-                        .anyRequest().permitAll()
-                );
+                        // 1. Define as rotas que são PÚBLICAS.
+                        // Qualquer requisição para "/api/auth/**" (nosso login) será permitida.
+                        .requestMatchers("/api/auth/**").permitAll()
+                        // Também permite acesso à documentação do Swagger, se você a utilizar.
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
+                        // 2. Define que TODAS AS OUTRAS rotas devem ser autenticadas.
+                        // Esta é a nossa regra "negar por padrão": se não foi explicitamente liberado,
+                        // o acesso é bloqueado e exige um token válido.
+                        .anyRequest().authenticated()
+                )
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
 
         return http.build();
     }
-}
+
+
+    }
+
 
