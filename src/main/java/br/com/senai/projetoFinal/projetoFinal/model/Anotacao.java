@@ -35,6 +35,10 @@ public class Anotacao {
     @Column(name = "imagem", nullable = false, length = Integer.MAX_VALUE)
     private String imagem;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
+
     public List<TagAnotacao> getTagAnotacao() {
         return tagAnotacao;
     }
