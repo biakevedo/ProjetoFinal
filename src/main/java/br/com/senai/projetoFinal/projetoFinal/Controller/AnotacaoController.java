@@ -18,14 +18,12 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 public class AnotacaoController {
 
-
         private final AnotacaoService anotacaoService;
 
         public AnotacaoController(AnotacaoService anotacaoService) {
             this.anotacaoService = anotacaoService;
         }
 
-        // ✅ Listar todas as anotações
         @GetMapping
         @Operation(summary = "Listar todas as anotações")
         public ResponseEntity<List<Anotacao>> listarAnotacoes() {
@@ -33,7 +31,6 @@ public class AnotacaoController {
             return ResponseEntity.ok(anotacoes);
         }
 
-        // Buscar anotação por ID
         @GetMapping("/{id}")
         @Operation(summary = "Buscar anotação por ID")
         public ResponseEntity<Anotacao> buscarPorId(@PathVariable Integer id) {
@@ -44,7 +41,6 @@ public class AnotacaoController {
             return ResponseEntity.ok(anotacao);
         }
 
-        // Cadastrar nova anotação
         @PostMapping
         @Operation(summary = "Cadastrar nova anotação")
         public ResponseEntity<CadastrarAnotacaoDTO> cadastrarAnotacao(@RequestBody CadastrarAnotacaoDTO dto) {
@@ -52,7 +48,6 @@ public class AnotacaoController {
             return ResponseEntity.status(201).body(nova);
         }
 
-        // Atualizar anotação existente
         @PutMapping("/{id}")
         @Operation(summary = "Atualizar anotação")
         public ResponseEntity<Anotacao> atualizarAnotacao(@PathVariable Integer id,
@@ -64,7 +59,6 @@ public class AnotacaoController {
             return ResponseEntity.ok(atualizada);
         }
 
-        //  Deletar anotação
         @DeleteMapping("/{id}")
         @Operation(summary = "Deletar anotação")
         public ResponseEntity<Void> deletarAnotacao(@PathVariable Integer id) {
@@ -74,21 +68,12 @@ public class AnotacaoController {
             }
             return ResponseEntity.noContent().build();
         }
-    // Em AnotacaoController.java
+
     @GetMapping("/{email}")
     public ResponseEntity<List<AnotacaoDTO>> listarAnotacoesPorEmail(@PathVariable String email) {
-        // 2. Anota o pedido e envia para a cozinha (Service)
+
         List<AnotacaoDTO> anotacoesDTO = anotacaoService.listarAnotacoesPorEmail(email);
 
-        // 3. Pega o prato pronto e entrega ao cliente com status 200 OK.
         return ResponseEntity.ok(anotacoesDTO);
     }
-//    @GetMapping("/{id}")
-//    public ResponseEntity<AnotacaoDTO> buscarAnotacao(@PathVariable Integer id) {
-//        AnotacaoDTO anotacaoDTO = anotacaoService.buscarAnotacaoComTags(id);
-//        if (anotacaoDTO == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        return ResponseEntity.ok(anotacaoDTO);
-//    }
 }
