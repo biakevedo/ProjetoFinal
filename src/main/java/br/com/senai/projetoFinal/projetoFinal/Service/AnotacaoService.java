@@ -1,11 +1,14 @@
 package br.com.senai.projetoFinal.projetoFinal.Service;
-
+import br.com.senai.projetoFinal.projetoFinal.Repository.TagAnotacaoRepository;
+import br.com.senai.projetoFinal.projetoFinal.Repository.TagRepository;
+import br.com.senai.projetoFinal.projetoFinal.Repository.UsuarioRepository;
 import br.com.senai.projetoFinal.projetoFinal.dto.anotacao.AnotacaoDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.anotacao.CadastrarAnotacaoDTO;
 import br.com.senai.projetoFinal.projetoFinal.dto.tag.ListarTagDTO;
-import br.com.senai.projetoFinal.projetoFinal.model.Anotacao;
+import br.com.senai.projetoFinal.projetoFinal.model.*;
 import br.com.senai.projetoFinal.projetoFinal.Repository.AnotacaoRepository;
-import br.com.senai.projetoFinal.projetoFinal.model.TagModel;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -16,9 +19,16 @@ import java.util.stream.Collectors;
 public class AnotacaoService {
 
     private final AnotacaoRepository anotacaoRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final TagRepository tagRepository;
+    private final TagAnotacaoRepository tagAnotacaoRepository;
 
-    public AnotacaoService(AnotacaoRepository anotacaoRepository) {
+    public AnotacaoService(AnotacaoRepository anotacaoRepository, UsuarioRepository usuarioRepository, TagRepository tagRepository, TagAnotacaoRepository tagAnotacaoRepository) {
+
         this.anotacaoRepository = anotacaoRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.tagRepository = tagRepository;
+        this.tagAnotacaoRepository = tagAnotacaoRepository;
     }
 
     // Listar todas as anotações (entidade completa)
@@ -26,8 +36,12 @@ public class AnotacaoService {
         return anotacaoRepository.findAll();
     }
 
-    // Cadastrar uma nova anotação (recebendo DTO)
+    @Transactional
     public CadastrarAnotacaoDTO cadastrarAnotacao(CadastrarAnotacaoDTO dto) {
+
+        Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado!"));
+
         Anotacao nova = new Anotacao();
 
         nova.setTitulo(dto.getTitulo());
@@ -37,8 +51,31 @@ public class AnotacaoService {
         nova.setDataCadastro(OffsetDateTime.now());
         nova.setDataAlteracao(OffsetDateTime.now());
 
-        anotacaoRepository.save(nova);
+        Anotacao anotacaoSalva = anotacaoRepository.save(nova);
 
+        for (String nomeTag : dto.getTags()) {
+
+            TagModel tag = tagRepository.findByNomeAndUsuarioId(nomeTag, usuario.getId())
+                    .orElseGet(() -> {
+                        TagModel novaTag = new TagModel();
+                        novaTag.setNome(nomeTag);
+                        novaTag.setUsuario(usuario);
+
+                        return tagRepository.save(novaTag);
+                    });
+
+            TagAnotacaoId tagAnotacaoId = new TagAnotacaoId();
+            tagAnotacaoId.setIdAnotacao(anotacaoSalva.getId());
+            tagAnotacaoId.setIdTag(tag.getId());
+
+            TagAnotacao associacao = new TagAnotacao();
+            associacao.setId(tagAnotacaoId);
+            associacao.setIdAnotacao(anotacaoSalva);
+            associacao.setIdTag(tag);
+
+            tagAnotacaoRepository.save(associacao);
+
+        }
         return dto;
     }
 
