@@ -1,9 +1,9 @@
-🗒️ SENAI Notes
+SENAI Notes
 
 SENAI Notes é uma API RESTful desenvolvida durante o curso de Back-End com Java (160h) no SENAI, com foco em boas práticas de arquitetura, segurança e escalabilidade.
 O projeto tem como objetivo permitir que usuários criem, organizem e compartilhem anotações com tags e imagens, integrando recursos modernos de autenticação, upload e documentação de API.
 
-💡 Destaques do projeto
+Destaques do projeto
 
 Desenvolvimento seguindo arquitetura em camadas (Controller, Service, Repository) e padrão DTO, promovendo código limpo e desacoplado
 
